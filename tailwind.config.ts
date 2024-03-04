@@ -32,9 +32,16 @@ const config = {
                 sans: ["var(--font-sans)", ...fontFamily.sans],
             },
         },
+        dropShadow: {
+            custom: "0 35px 35px rgba(0, 0, 0, 0.25)",
+        },
     },
     plugins: [require("tailwindcss-animate")],
 } satisfies Config;
 
 export default config;
+
+
+
+
 
