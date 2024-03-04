@@ -6,18 +6,21 @@ import { Loader2, Pencil } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import axios from "axios";
 import React from "react";
 
 const nameArray = "Next Scribble".split("");
 
 const Page = () => {
     const session = useSession();
-    const [isLoading, showLoading, closeLoading] = useBoolean(false);
+    const [isLoading, showLoading] = useBoolean(false);
     if (session.data?.user) return redirect("/");
 
     const handleSignIn = async () => {
         showLoading();
-        await signIn("google");
+        const profile = await signIn("google");
+        console.log(profile);
+        // await axios.post("/api/profile/create", profile?.);
     };
 
     return (

@@ -1,6 +1,7 @@
 "use client";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { pusherClient } from "@/lib/pusherInstance";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 
 const Header = () => {
