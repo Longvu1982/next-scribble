@@ -11,7 +11,7 @@ const initProfile: () => Promise<Profile | null> = async () => {
 
     const user = session?.user;
 
-    if (!user) return redirect("sign-in");
+    if (!user) return redirect("/sign-in");
 
     const profile = await db.profile.findFirst({ where: { userId: user.id } });
 

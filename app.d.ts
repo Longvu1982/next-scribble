@@ -11,4 +11,6 @@ declare module "next-auth" {
     }
 }
 
-declare type A = any;
+declare global {
+    type A = any;
+} 

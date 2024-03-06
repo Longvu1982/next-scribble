@@ -14,12 +14,82 @@ datasource db {
 }
 
 model Profile {
-  id          String       @id @default(uuid()) @map("_id")
-  userId      String       @unique 
-  name        String
-  imageUrl    String       @db.String
-  email       String       @db.String
+  id       String @id @default(uuid()) @map("_id")
+  userId   String @unique
+  name     String
+  imageUrl String @db.String
+  email    String @db.String
 
-  createAt  DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  players Player[]
+}
+
+model Player {
+  id    String @id @default(uuid()) @map("_id")
+  score Int    @default(0)
+
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  @@index([profileId])
+  @@index([roomId])
+}
+
+enum MessageType {
+  NORMAL
+  ALMOST
+  CORRECT
+}
+model Message {
+  id      String @id @default(uuid()) @map("_id")
+  content String
+  type MessageType @default(NORMAL)
+
+  roomId String
+  room   Room?   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  playerId String
+  player   Player @relation(fields: [playerId], references: [id])
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleted   Boolean  @default(false)
+
+  @@index([playerId])
+  @@index([roomId])
+}
+
+enum RoomType {
+  PUBLIC
+  PRIVATE
+
+  @@map("ChannelType")
+}
+
+model Room {
+  id   String   @id @default(uuid()) @map("_id")
+  name String
+  type RoomType @default(PUBLIC)
+  code String?
+
+  drawDuration     Int      @default(80)
+  currentDrawingId String?
+  currentWord      String?
+  words            String[]
+  ownerId          String
+  started          Boolean  @default(false)
+  finished         Boolean  @default(false)
+
+  messages Message[]
+  players  Player[]
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
