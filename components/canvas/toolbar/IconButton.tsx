@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import styles from "./IconButton.module.css";
 
 type Props = {
@@ -14,12 +15,13 @@ export default function IconButton({
   disabled,
 }: Props) {
   return (
-    <button
-      className={`${styles.button} ${isActive ? styles.button_active : ""}`}
+    <Button
+      variant={isActive ? "boardActive" : "board"}
       onClick={onClick}
+      size="icon"
       disabled={disabled}
     >
       {children}
-    </button>
+    </Button>
   );
 }

@@ -8,6 +8,7 @@ export enum LayerType {
   Rectangle,
   Ellipse,
   Path,
+  Text,
 }
 
 export type Camera = {
@@ -81,7 +82,7 @@ export type CanvasState =
     }
   | {
       mode: CanvasMode.Inserting;
-      layerType: LayerType.Ellipse | LayerType.Rectangle;
+      layerType: LayerType.Ellipse | LayerType.Rectangle | LayerType.Text;
     }
   | {
       mode: CanvasMode.Pencil;

@@ -1,7 +1,9 @@
 import { createClient } from "@liveblocks/client";
 import { createRoomContext, createLiveblocksContext } from "@liveblocks/react";
+import { Color } from "./components/canvas/types";
 
 const client = createClient({
+  throttle: 16,
   publicApiKey: process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY!,
   async resolveUsers({ userIds }) {
     // Used only for Comments and Notifications. Return a list of user information
@@ -49,8 +51,11 @@ const client = createClient({
 // and that will automatically be kept in sync. Accessible through the
 // `user.presence` property. Must be JSON-serializable.
 type Presence = {
-  // cursor: { x: number, y: number } | null,
+  cursor: { x: number; y: number } | null;
   // ...
+  selection: string[];
+  pencilDraft: number[][] | null;
+  penColor: Color;
 };
 
 // Optionally, Storage represents the shared document that persists in the
@@ -60,6 +65,8 @@ type Presence = {
 type Storage = {
   // author: LiveObject<{ firstName: string, lastName: string }>,
   // ...
+  layers: A;
+  layerIds: A;
 };
 
 // Optionally, UserMeta represents static/readonly metadata on each user, as

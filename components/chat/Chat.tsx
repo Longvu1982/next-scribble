@@ -31,7 +31,6 @@ const Chat: FC<ChatProps> = ({ roomId, currentPlayer, players }) => {
   const [queryCursor, setQueryCursor] = useState<string | undefined>(undefined);
   const profile = useCurrentProfile((state) => state.profile);
 
-  console.log(profile);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,10 +43,7 @@ const Chat: FC<ChatProps> = ({ roomId, currentPlayer, players }) => {
 
   const isLoading = form.formState.isSubmitting;
 
-  console.log(players);
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     const payload = {
       ...values,
       roomId,
@@ -75,7 +71,6 @@ const Chat: FC<ChatProps> = ({ roomId, currentPlayer, players }) => {
         setHasMoreMessages(false);
       }
       setQueryCursor(data.cursor);
-      console.log("data", data);
     }
   };
 

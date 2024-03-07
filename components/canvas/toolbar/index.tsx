@@ -1,8 +1,14 @@
-import React from "react";
-
-import { CanvasMode, LayerType, CanvasState } from "../types";
-import styles from "./index.module.css";
-import PencilButton from "./main/PencilButton";
+import {
+  EclipseIcon,
+  MousePointer2,
+  Pencil,
+  Redo2,
+  Square,
+  Type,
+  Undo2,
+} from "lucide-react";
+import { CanvasMode, CanvasState, LayerType } from "../types";
+import IconButton from "./IconButton";
 
 type Props = {
   canvasState: CanvasState;
@@ -22,10 +28,9 @@ export default function ToolsBar({
   canRedo,
 }: Props) {
   return (
-    <div className={styles.tools_panel_container}>
-      <div className={styles.tools_panel}>
-        <div className={styles.tools_panel_section}>
-          {/* <SelectionButton
+    <div className="absolute left-1/2 -translate-x-1/2 bottom-10 bg-white shadow-lg p-1 rounded-md flex items-center gap-4">
+      <div className="flex gap-1">
+        {/* <SelectionButton
             isActive={
               canvasState.mode === CanvasMode.None ||
               canvasState.mode === CanvasMode.Translating ||
@@ -35,11 +40,57 @@ export default function ToolsBar({
             }
             onClick={() => setCanvasState({ mode: CanvasMode.None })}
           /> */}
-          <PencilButton
-            isActive={canvasState.mode === CanvasMode.Pencil}
-            onClick={() => setCanvasState({ mode: CanvasMode.Pencil })}
-          />
-          {/* <RectangleButton
+
+        <IconButton
+          isActive={
+            canvasState.mode === CanvasMode.None ||
+            canvasState.mode === CanvasMode.Translating ||
+            canvasState.mode === CanvasMode.SelectionNet ||
+            canvasState.mode === CanvasMode.Pressing ||
+            canvasState.mode === CanvasMode.Resizing
+          }
+          onClick={() => setCanvasState({ mode: CanvasMode.None })}
+        >
+          <MousePointer2 />
+        </IconButton>
+
+        <IconButton
+          isActive={canvasState.mode === CanvasMode.Pencil}
+          onClick={() => setCanvasState({ mode: CanvasMode.Pencil })}
+        >
+          <Pencil />
+        </IconButton>
+
+        <IconButton
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Rectangle
+          }
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Rectangle,
+            })
+          }
+        >
+          <Square />
+        </IconButton>
+
+        <IconButton
+          isActive={
+            canvasState.mode === CanvasMode.Inserting &&
+            canvasState.layerType === LayerType.Ellipse
+          }
+          onClick={() =>
+            setCanvasState({
+              mode: CanvasMode.Inserting,
+              layerType: LayerType.Ellipse,
+            })
+          }
+        >
+          <EclipseIcon />
+        </IconButton>
+        {/* <RectangleButton
             isActive={
               canvasState.mode === CanvasMode.Inserting &&
               canvasState.layerType === LayerType.Rectangle
@@ -63,12 +114,15 @@ export default function ToolsBar({
               })
             }
           /> */}
-        </div>
-        <div className={styles.seperator}></div>
-        <div className={styles.tools_panel_section}>
-          {/* <UndoButton onClick={undo} disabled={!canUndo} /> */}
-          {/* <RedoButton onClick={redo} disabled={!canRedo} /> */}
-        </div>
+      </div>
+      <div className="flex gap-1">
+        <IconButton isActive={false} onClick={undo} disabled={!canUndo}>
+          <Undo2 />
+        </IconButton>
+
+        <IconButton isActive={false} onClick={redo} disabled={!canRedo}>
+          <Redo2 />
+        </IconButton>
       </div>
     </div>
   );

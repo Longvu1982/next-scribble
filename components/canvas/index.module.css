@@ -16,7 +16,7 @@
 }
 
 .canvas {
-  background-color: var(--color-surface-canvas);
+  background-color: white;
   touch-action: none;
   height: 100%;
 }
@@ -40,7 +40,7 @@
   display: flex;
   place-content: center;
   place-items: center;
-  background-color: var(--color-surface-canvas);
+  background-color: white;
 }
 
 .loading img {

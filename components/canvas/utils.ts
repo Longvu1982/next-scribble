@@ -200,10 +200,10 @@ export function penPointsToPathLayer(
 
 export function pointerEventToCanvasPoint(
   e: React.PointerEvent,
-  camera: Camera
+  ref: A
 ): Point {
   return {
-    x: Math.round(e.clientX) - camera.x,
-    y: Math.round(e.clientY) - camera.y,
+    x: Math.round(e.clientX) - ref.current?.getBoundingClientRect().left,
+    y: Math.round(e.clientY) - ref.current?.getBoundingClientRect().top,
   };
 }

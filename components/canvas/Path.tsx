@@ -23,7 +23,7 @@ export default function Path({
       onPointerDown={onPointerDown}
       d={getSvgPathFromStroke(
         getStroke(points, {
-          size: 16,
+          size: 12,
           thinning: 0.5,
           smoothing: 0.5,
           streamline: 0.5,
