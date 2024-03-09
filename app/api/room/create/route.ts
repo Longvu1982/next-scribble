@@ -27,10 +27,22 @@ export const POST = async (req: NextRequest) => {
                     },
                 },
             },
+            include: {
+                players: true,
+            },
         });
 
-        console.log(room);
-        return NextResponse.json(room);
+        const updatedRoom = await db.room.update({
+            where: {
+                id: room.id,
+            },
+            data: {
+                ownerId: room.players[0].id,
+                currentDrawingId: room.players[0].id,
+            },
+        });
+
+        return NextResponse.json(updatedRoom);
     } catch (err) {
         return new NextResponse("Internal Error", { status: 500 });
     }

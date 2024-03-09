@@ -20,12 +20,11 @@ const PlayerList: FC<PlayerListProps> = ({ players: serverPlayers, roomId }) => 
     }, [serverPlayers]);
 
     useEffect(() => {
-        pusherClient.subscribe(roomId);
-        pusherClient.bind("new-joiner", ({ players: newPlayers }: { players: PlayersWithProfile[] }) => {
-            console.log(newPlayers);
-            if (newPlayers.length !== players.length) setPlayers(newPlayers);
-        });
-        return () => pusherClient.unsubscribe(roomId);
+        if (roomId) {
+            pusherClient.bind("new-joiner", ({ players: newPlayers }: { players: PlayersWithProfile[] }) => {
+                if (newPlayers.length !== players.length) setPlayers(newPlayers);
+            });
+        }
     }, [roomId]);
 
     return (

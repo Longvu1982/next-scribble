@@ -80,6 +80,10 @@ model Room {
   code String?
 
   drawDuration     Int      @default(80)
+  timeLeft Int @default(80)
+  numberOfRounds Int @default(3)
+  currentRounds Int @default(0)
+  isDrawing Boolean @default(false)
   currentDrawingId String?
   currentWord      String?
   words            String[]

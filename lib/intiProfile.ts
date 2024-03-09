@@ -7,8 +7,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 const initProfile: () => Promise<Profile | null> = async () => {
     const session = await getServerSession(authOptions);
 
-    console.log("session: " + session?.user.id);
-
     const user = session?.user;
 
     if (!user) return redirect("/sign-in");

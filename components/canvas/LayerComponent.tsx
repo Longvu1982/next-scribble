@@ -23,7 +23,6 @@ const LayerComponent = memo(
     const isAnimated =
       mode !== CanvasMode.Translating && mode !== CanvasMode.Resizing;
 
-    console.log(layer);
     switch (layer.type) {
       case LayerType.Ellipse:
         return (
