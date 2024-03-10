@@ -47,13 +47,14 @@ enum MessageType {
   ALMOST
   CORRECT
 }
+
 model Message {
-  id      String @id @default(uuid()) @map("_id")
+  id      String      @id @default(uuid()) @map("_id")
   content String
-  type MessageType @default(NORMAL)
+  type    MessageType @default(NORMAL)
 
   roomId String
-  room   Room?   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  room   Room?  @relation(fields: [roomId], references: [id], onDelete: Cascade)
 
   playerId String
   player   Player @relation(fields: [playerId], references: [id])
@@ -79,17 +80,19 @@ model Room {
   type RoomType @default(PUBLIC)
   code String?
 
-  drawDuration     Int      @default(80)
-  timeLeft Int @default(80)
-  numberOfRounds Int @default(3)
-  currentRounds Int @default(0)
-  isDrawing Boolean @default(false)
+  drawDuration     Int       @default(80)
+  timeLeft         Int       @default(80)
+  numberOfRounds   Int       @default(3)
+  currentRounds    Int       @default(0)
+  isDrawing        Boolean   @default(false)
   currentDrawingId String?
   currentWord      String?
   words            String[]
   ownerId          String
-  started          Boolean  @default(false)
-  finished         Boolean  @default(false)
+  started          Boolean   @default(false)
+  finishedTurn     Boolean   @default(false)
+  finished         Boolean   @default(false)
+  wordTimeStamp    DateTime? @default(now())
 
   messages Message[]
   players  Player[]
