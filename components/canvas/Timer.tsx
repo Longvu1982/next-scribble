@@ -3,7 +3,13 @@ import { PlayerExtend, RoomExtend } from "@/lib/types";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Clock } from "lucide-react";
-import { MutableRefObject, useEffect, useLayoutEffect, useState } from "react";
+import {
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface TimerProps {
   isCurrent: boolean;
@@ -27,21 +33,27 @@ const Timer = ({
 }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
+  const timerRef = useRef<A>(null);
+
   useLayoutEffect(() => {
-    let timerId: A;
-    if (currentRoom.drawDuration) {
-      timerId = setInterval(() => {
+    // if (timerRef.current) return;
+    if (currentRoom.drawDuration && (currentRoom.wordTimeStamp || timeStamp)) {
+      timerRef.current = setInterval(() => {
         const time = Math.max(
           0,
           //   currentRoom.drawDuration -
           50 -
             Math.abs(
-              dayjs(timeStamp ?? currentRoom.updatedAt).diff(dayjs(), "seconds")
+              dayjs(timeStamp ?? currentRoom.wordTimeStamp).diff(
+                dayjs(),
+                "seconds"
+              )
             )
         );
         if (time === 0 && shouldShowResult.current) {
           setShowResult(true);
           shouldShowResult.current = false;
+          clearInterval(timerRef.current);
         } else if (time !== 0) {
           console.log("rime here", time);
           shouldShowResult.current = true;
@@ -50,38 +62,40 @@ const Timer = ({
         setTimeLeft(time);
       }, 1000);
     }
-    return () => clearInterval(timerId);
-  }, [timeStamp, currentRoom.drawDuration]);
+    return () => clearInterval(timerRef.current);
+  }, [timeStamp, currentRoom.drawDuration, currentRoom.wordTimeStamp]);
 
   // announce join in after load the room info
-  useEffect(() => {
-    (async () => {
-      if (currentRoom.id) {
-        axios.post("/api/room/connect", {
-          roomId: currentRoom.id,
-          playerId: currentPlayer.id,
-        });
-      }
-    })();
-  }, [currentRoom.id]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (currentRoom.id) {
+  //       axios.post("/api/room/connect", {
+  //         roomId: currentRoom.id,
+  //         playerId: currentPlayer.id,
+  //       });
+  //     }
+  //   })();
+  // }, [currentRoom.id]);
 
-  useEffect(() => {
-    pusherClient.bind("update-time", (time: number) => {
-      if (!isCurrent) setTimeLeft(time);
-    });
-  }, [isCurrent]);
+  // console.log(timeLeft);
 
-  useEffect(() => {
-    pusherClient.bind("connect", async (playerId: string) => {
-      if (isCurrent) {
-        await axios.post("/api/room/update-time", {
-          roomId: currentRoom.id,
-          timeLeft: timeLeft,
-          socketOnly: true,
-        });
-      }
-    });
-  }, [isCurrent]);
+  // useEffect(() => {
+  //   pusherClient.bind("update-time", (time: number) => {
+  //     if (!isCurrent) setTimeLeft(time);
+  //   });
+  // }, [isCurrent]);
+
+  // useEffect(() => {
+  //   pusherClient.bind("connect", async (playerId: string) => {
+  //     if (isCurrent) {
+  //       await axios.post("/api/room/update-time", {
+  //         roomId: currentRoom.id,
+  //         timeLeft: timeLeft,
+  //         socketOnly: true,
+  //       });
+  //     }
+  //   });
+  // }, [isCurrent]);
 
   return (
     <div className="absolute right-2 top-2 z-10 text-zinc-600 text-2xl flex items-center gap-1">

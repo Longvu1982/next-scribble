@@ -92,7 +92,7 @@ model Room {
   started          Boolean   @default(false)
   finishedTurn     Boolean   @default(false)
   finished         Boolean   @default(false)
-  wordTimeStamp    DateTime? @default(now())
+  wordTimeStamp    DateTime?
 
   messages Message[]
   players  Player[]
