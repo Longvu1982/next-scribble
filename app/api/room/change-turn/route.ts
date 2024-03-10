@@ -31,7 +31,7 @@ export const POST = async (req: NextRequest) => {
       },
     });
 
-    pusherServer.trigger(roomId, "change-turn", {});
+    await pusherServer.trigger(roomId, "change-turn", {});
     return NextResponse.json({});
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });

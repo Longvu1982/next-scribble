@@ -13,7 +13,7 @@ export const POST = async (req: NextRequest) => {
 
     if (!roomId) return new NextResponse("Room not found", { status: 420 });
 
-    pusherServer.trigger(roomId, "connect", playerId);
+    await pusherServer.trigger(roomId, "connect", playerId);
     return NextResponse.json(playerId);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });

@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
         },
       });
 
-    pusherServer.trigger(roomId, "update-time", estimateTimeLeft);
+    await pusherServer.trigger(roomId, "update-time", estimateTimeLeft);
     return NextResponse.json(estimateTimeLeft);
   } catch (err) {
     return new NextResponse("Internal Error", { status: 500 });
